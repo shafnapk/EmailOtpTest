@@ -40,22 +40,40 @@ app.use(express.static('./dist'));
 const urlencodedParser=bodyparser.urlencoded({extended:false}); 
 
 
-app.get("/submitusermail",(req,res)=>{
-    console.log(req.query.usermail);
-    var user = {
-          email : req.query.usermail,
-          otp : 100000 + Math. floor(Math. random() * 900000),    
-    }
-
-    
-    console.log(user)
-
-    var newuser=new userdata(user);
-    newuser.save();
+app.get("/getuserotp", (req,res)=>{
+    response.header("Access-Control-Allow-Origin","*");
+    response.header("Access-Control-Allow-Methods:GET,POST,PUT,DELETE");
+    userdata.findOne({email: request.body.email}).then(
+        function(user){
+            console.log(user);
+            response.send(user);
+        }
+    );
+});
 
 
-    mailOptions.to = user.email.toString();
-        mailOptions.text = user.otp.toString();
+app.post("/submitusermail",(req,res)=>{
+    console.log(req.body.usermail);
+
+    userdata.findOne({email: req.body.usermail}, function(err, fuser){
+        console.log(fuser)
+        if(err || fuser==null){
+            var user = {
+                email : req.body.usermail,
+                otp : 100000 + Math. floor(Math. random() * 900000),    
+            }          
+            console.log(user)      
+            var newuser=new userdata(user);
+            newuser.save();
+            fuser = newuser;
+        }
+        else{
+            fuser.otp = 100000 + Math. floor(Math. random() * 900000);
+            fuser.save();
+        }
+
+        mailOptions.to = fuser.email.toString();
+        mailOptions.text = fuser.otp.toString();
         console.log(mailOptions)
         transporter.sendMail(mailOptions,  function(error, info){
                                                 if (error) {
@@ -64,8 +82,11 @@ app.get("/submitusermail",(req,res)=>{
                                                   console.log('Email sent: ' + info.response);
                                                 }
         });
-   
-    
+
+    });
+
+    res.send('user mail saved');
+
 });
 
 
