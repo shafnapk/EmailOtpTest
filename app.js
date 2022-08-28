@@ -41,12 +41,11 @@ const urlencodedParser=bodyparser.urlencoded({extended:false});
 
 
 app.get("/getuserotp", (req,res)=>{
-    response.header("Access-Control-Allow-Origin","*");
-    response.header("Access-Control-Allow-Methods:GET,POST,PUT,DELETE");
-    userdata.findOne({email: request.body.email}).then(
+    console.log( req.query.usermail)
+    userdata.findOne({email: req.query.usermail}).then(
         function(user){
             console.log(user);
-            response.send(user);
+            res.send(user);
         }
     );
 });
@@ -85,7 +84,7 @@ app.post("/submitusermail",(req,res)=>{
 
     });
 
-    res.send('user mail saved');
+    res.send({'message':'user mail saved'});
 
 });
 
