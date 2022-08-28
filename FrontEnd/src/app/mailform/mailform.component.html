@@ -1,0 +1,18 @@
+
+<div class="emaildiv" > 
+    <div class="container">
+      <div class="form-container">
+        <form class="form" #signInForm="ngForm" (ngSubmit)="signInForm.valid && onSubmit(signInForm)">
+          <br>
+          <label name="email">Email</label>
+          <div class="form-control">
+            <input type="text" class="input" name="email" #email="ngModel" [(ngModel)]="usermail" 
+            placeholder="Email" [pattern]="emailRegex" >
+          </div>
+          <br>
+          <input type="submit" value="Get OTP">
+        </form> 
+        </div>
+    </div>
+  </div>
+  

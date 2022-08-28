@@ -1,0 +1,20 @@
+
+
+
+  
+<div class="otp" > 
+  <div class="container">
+    <div class="form-container">
+      <form class="form" #otpForm="ngForm" (ngSubmit)="onSubmit(otpForm)">
+        <br>
+        <label name="otplabel">Enter Your OTP</label>
+        <div class="form-control">
+          <input type="text" class="input" name="otpText" #otp="ngModel" [(ngModel)]="otpsubmit" 
+          placeholder="OTP">
+        </div>
+        <br>
+        <input type="submit" value="Submit OTP">
+      </form> 
+      </div>
+  </div>
+</div>
